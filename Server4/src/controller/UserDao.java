@@ -66,7 +66,7 @@ public class UserDao extends Dao{
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getName());
             ps.setInt(4, 0);
-            ps.setString(5, "ONLINE");
+            ps.setString(5, "OFFLINE");
             
             ps.executeUpdate();
         } catch (SQLException ex) {
