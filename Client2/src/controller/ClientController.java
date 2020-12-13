@@ -6,7 +6,6 @@
 package controller;
 
 import View.GameView;
-import View.HomeView;
 import View.LoginView;
 import View.RankingView;
 import View.StartView;
@@ -35,6 +34,7 @@ public class ClientController {
     private int serverPort = 8888;
     ObjectInputStream ois;
     ObjectOutputStream oos;
+    static  UserOnlineView userOnlineView;
            
 
     public ClientController() {
@@ -97,20 +97,42 @@ public class ClientController {
                     return listRanking;
                     
                 case INVITE_USER:
-                    System.out.println("Da nhan loi moi tu clent 1");
-                    Message inviteMessage = o;
-                    User user = (User)inviteMessage.getObject();
-                    Boolean accept = (JOptionPane.showConfirmDialog(null, 
-                                user.getName() + " want to challege you in a chess game") 
-                                == JOptionPane.YES_OPTION);
-                    if(accept){
-                            Message mess = new Message(user, Message.Label.ACCEPT_INVITE);
-                            sendData(mess);
-                            }
-                    else{
-                        Message mess = new Message(user, Message.Label. REJECT_INVITE);
-                            sendData(mess);
-                            }
+                    User userReceive = (User) o.getObject();
+                    System.out.println("Da  nhan duoc yeu cau");
+                    int isAccept = userOnlineView.showConfirmDialog(userReceive.getName() + " want to challege you in a game");
+                                if (isAccept == JOptionPane.YES_OPTION) {
+                                    Message response = new Message(userReceive, Message.Label.ACCEPT_INVITE);
+                                    System.out.println("accept");
+                                    sendData(response);
+                                } else {
+                                    Message response = new Message(userReceive, Message.Label.REJECT_INVITE);
+                                    System.out.println("Reject");
+                                    sendData(response);
+                                }
+                                break;
+                case REJECT_INVITE:
+                                User userRUser = (User) o.getObject();
+                                userOnlineView.showMessage(userRUser.getName() + " dont want to challege you in a game");
+                                break;
+                            case PLAYING:
+                                 User userX = (User) o.getObject();
+                                userOnlineView.showMessage(userX.getName() + " playing a game with someone else!");
+                                break;
+                    
+//                    System.out.println("Da nhan loi moi tu clent 1");
+//                    Message inviteMessage = o;
+//                    User user = (User)inviteMessage.getObject();
+//                    Boolean accept = (JOptionPane.showConfirmDialog(null, 
+//                                user.getName() + " want to challege you in a chess game") 
+//                                == JOptionPane.YES_OPTION);
+//                    if(accept){
+//                            Message mess = new Message(user, Message.Label.ACCEPT_INVITE);
+//                            sendData(mess);
+//                            }
+//                    else{
+//                        Message mess = new Message(user, Message.Label. REJECT_INVITE);
+//                            sendData(mess);
+//                            }
                 
                 case ACCEPT_INVITE:
                     Message message = o;

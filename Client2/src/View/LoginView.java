@@ -6,6 +6,7 @@
 package View;
 
 import controller.ClientController;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import model.Message;
 import model.User;
@@ -15,8 +16,11 @@ import model.User;
  * @author Admin
  */
 public class LoginView extends javax.swing.JFrame {
-
+    
     static ClientController clientController = new ClientController();
+     static ArrayList<User> listUserOnline = new ArrayList<>();
+     static ArrayList<User> listRanking = new ArrayList<>();
+     static  UserOnlineView userOnlineView;
     public LoginView() {
         initComponents();
         clientController.openConnection();
@@ -128,17 +132,26 @@ public class LoginView extends javax.swing.JFrame {
         User user = new User(username, password);
         Message mess = new Message(user, Message.Label.LOGIN);
         clientController.sendData(mess);
-      
         String result= (String) clientController.receiveData();
         if(result.equals("LOGIN_SUCCESS")){
-            HomeView homeView = new HomeView();
-            homeView.setVisible(true);
+//            UserOnlineView homeView = new UserOnlineView();
+//            homeView.setVisible(true);
+              UserOnlineView userOnlineView = new UserOnlineView();
+              userOnlineView.setVisible(true);
         }
         else if (result.equals("LOGIN_FAIL")){
             JOptionPane.showMessageDialog(this,"Invalid username or password !");
+            //JOptionPane.showConfirmDialog(this,"NMBjd");
             
         }
+//        Message message = new Message(user, Message.Label.LIST_USERS);
+//        LoginView.clientController.sendData(message);
+//        Message listUserMessage = (Message) LoginView.clientController.receiveData();
+//        if(listUserMessage.getLabel().toString()== "LIST_USERS"){
+//            UserOnlineView userOnlineView = Us
+//        }
         this.dispose();
+        
     }//GEN-LAST:event_login_btnLoginActionPerformed
 
     private void login_btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_btnCancelActionPerformed

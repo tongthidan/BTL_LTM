@@ -52,9 +52,11 @@ public class UserDao extends Dao{
             ps.setInt(2, user.getId());
             ps.executeUpdate();
             user.setOnline(status);
+           
         }catch(Exception ex){
             ex.printStackTrace();
         }
+        
     }
     
     public boolean insertUser(User user){

@@ -38,7 +38,7 @@ public class Message implements Serializable{
     }
      public static enum Label {
         //login,register
-        LOGIN,LOGOUT,
+        LOGIN,LOGOUT,LOG,
         LOGIN_SUCCESS,
         LOGIN_FAIL,
         REGISTER,
@@ -61,8 +61,10 @@ public class Message implements Serializable{
         GET_SCOREBOARD,
         REPLY_SCOREBOARD,
         //moi
+        CHALLENGE,
         INVITE_USER,
         ACCEPT_INVITE,
-        REJECT_INVITE
+        REJECT_INVITE,
+        PLAYING
     }
 }

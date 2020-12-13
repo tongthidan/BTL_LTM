@@ -29,10 +29,10 @@ public class RankingView extends javax.swing.JFrame {
 
         tableModel = (DefaultTableModel) tblRanking.getModel();
         tableModel.setRowCount(0);
-        Collections.sort(HomeView.listRanking);
-        Collections.reverse(HomeView.listRanking);
+        Collections.sort(UserOnlineView.listRanking);
+        Collections.reverse(UserOnlineView.listRanking);
         int count = 0;
-        for(User i: HomeView.listRanking){
+        for(User i: UserOnlineView.listRanking){
             count ++;
             i.setCount(count);
             tableModel.addRow(i.toObjectR());
@@ -131,7 +131,7 @@ public class RankingView extends javax.swing.JFrame {
 
     private void Ranking_btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ranking_btnBackActionPerformed
         // TODO add your handling code here:
-        HomeView homeView = new HomeView();
+        UserOnlineView homeView = new UserOnlineView();
         homeView.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Ranking_btnBackActionPerformed

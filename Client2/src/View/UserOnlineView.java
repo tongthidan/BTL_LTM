@@ -5,8 +5,10 @@
  */
 package View;
 
+
 import controller.ClientController;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Message;
 import model.User;
@@ -20,18 +22,37 @@ public class UserOnlineView extends javax.swing.JFrame {
     /**
      * Creates new form UserOnlineView
      */
-    DefaultTableModel tableModel;
     
-    ArrayList<User> listOnline;
+    
+     static  ArrayList<User> listOnline;
+     static ArrayList<User> listUserOnline = new ArrayList<>();
+     static ArrayList<User> listRanking = new ArrayList<>();
+     DefaultTableModel tableModel ;
+     static  UserOnlineView userOnlineView;
     public UserOnlineView() {
-        initComponents();
-       tableModel = (DefaultTableModel) tblUserOnline.getModel();
-       tableModel.setRowCount(0);
-        for(User i : HomeView.listUserOnline){
+      Message userMessage = new Message(null, Message.Label.LIST_USERS);
+      LoginView.clientController.sendData(userMessage);
+      Message listMessage = (Message) LoginView.clientController.receiveData();
+      listUserOnline = (ArrayList<User>) listMessage.getObject();
+       initComponents();
+
+        tableModel = (DefaultTableModel) tblUserOnline.getModel();
+       
+        tableModel.setRowCount(0);
+         for(User i : listUserOnline){
             tableModel.addRow(i.toObject());
         }
+         
+       
   
     }
+     public int showConfirmDialog(String content) {
+        return JOptionPane.showConfirmDialog(userOnlineView, content);
+    }
+     public void showMessage(String content) {
+        JOptionPane.showMessageDialog(userOnlineView, content);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,18 +63,18 @@ public class UserOnlineView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUserOnline = new javax.swing.JTable();
         UserOnline_btnInvite = new javax.swing.JButton();
-        UserOnline_btnBack = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        UserOnlineView_btnRefresh = new javax.swing.JButton();
+        UserOnline_btnRanking = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("List User Online");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         tblUserOnline.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -80,20 +101,13 @@ public class UserOnlineView extends javax.swing.JFrame {
             }
         });
 
-        UserOnline_btnBack.setText("Back ");
-        UserOnline_btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UserOnline_btnBackActionPerformed(evt);
-            }
-        });
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("Please Select Competior");
+        jLabel2.setText("MATCH PHOTO GAME ");
 
-        UserOnlineView_btnRefresh.setText("Refresh");
-        UserOnlineView_btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+        UserOnline_btnRanking.setText("Ranking");
+        UserOnline_btnRanking.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UserOnlineView_btnRefreshActionPerformed(evt);
+                UserOnline_btnRankingActionPerformed(evt);
             }
         });
 
@@ -102,91 +116,82 @@ public class UserOnlineView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addComponent(UserOnline_btnInvite)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(UserOnline_btnBack)
-                .addGap(139, 139, 139))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(145, 145, 145)
+                        .addGap(116, 116, 116)
+                        .addComponent(UserOnline_btnInvite, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65)
+                        .addComponent(UserOnline_btnRanking))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(UserOnlineView_btnRefresh))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
+                        .addGap(24, 24, 24)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(UserOnlineView_btnRefresh)
-                        .addGap(18, 18, 18)))
+                .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(UserOnline_btnBack)
-                    .addComponent(UserOnline_btnInvite))
-                .addGap(21, 21, 21))
+                    .addComponent(UserOnline_btnInvite)
+                    .addComponent(UserOnline_btnRanking))
+                .addGap(62, 62, 62))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void UserOnline_btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnBackActionPerformed
-        // TODO add your handling code here:
-        HomeView homeView = new HomeView();
-        homeView.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_UserOnline_btnBackActionPerformed
-
-    private void UserOnlineView_btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnlineView_btnRefreshActionPerformed
-       
-        Message message = new Message(null, Message.Label.LIST_USERS);
-       LoginView.clientController.sendData(message);
-        System.out.println("send refresh");
-       Message messRefresh = (Message) LoginView.clientController.receiveData();
-        System.out.println(messRefresh.getObject());
-       if(messRefresh.getLabel().toString() == "LIST_FULL"){
-           listOnline = (ArrayList<User>) messRefresh.getObject();
-         
-//            tableModel = (DefaultTableModel) tblUserOnline.getModel();
-            tableModel.setRowCount(0);
-             for(User i : listOnline){
-                 tableModel.addRow(i.toObject());
-                 }
-           
-       }
-       
-       
-       
-    }//GEN-LAST:event_UserOnlineView_btnRefreshActionPerformed
-
     private void UserOnline_btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnInviteActionPerformed
         // TODO add your handling code here:
-        int i = tblUserOnline.getSelectedRow();
-        int id = Integer.parseInt(tableModel.getValueAt(i, 0).toString());
-        String username = (String) tableModel.getValueAt(i, 1);
-        int  point =  (int) tableModel.getValueAt(i,3); 
-        User user = new User(id, username, point);
-        Message message = new Message(user, Message.Label.INVITE_USER);
+        int row = tblUserOnline.getSelectedRow();
+       int id = (int) tblUserOnline.getValueAt(row, 0);
+        String name = tblUserOnline.getValueAt(row, 2).toString();
+        int point = (int) tblUserOnline.getValueAt(row, 3);
+        System.out.println("name selected " + name + " " + "point" + point);
+        User user = new User(id, name, point);
+        for (User acc : listUserOnline) {
+            if (acc.getName().equals(name) && acc.getPoint() == point) {
+               user = acc;
+                
+            }
+        }
+        Message message = new Message(user, Message.Label.CHALLENGE);
         LoginView.clientController.sendData(message);
-        System.out.println("da gui invite" + message.getObject());
+        System.out.println("Da gui yeu cau invite toi "+ user.getName());
        
     }//GEN-LAST:event_UserOnline_btnInviteActionPerformed
+
+    private void UserOnline_btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnRankingActionPerformed
+        // TODO add your handling code here:
+        Message messageSendRank = new Message(null, Message.Label.GET_SCOREBOARD);
+        LoginView.clientController.sendData(messageSendRank);
+        System.out.println("Da gui yeu cau Ranking");
+        Message messageReceiRanking = (Message) LoginView.clientController.receiveData();
+        System.out.println("Da nhan ranking view");
+      
+        listRanking = (ArrayList<User>)messageReceiRanking.getObject();
+         if(messageReceiRanking.getLabel().toString()== "REPLY_SCOREBOARD"){
+            RankingView rankingView = new RankingView();
+            rankingView.setVisible(true);
+         }
+         else{
+             System.out.println("Ranking view fail");
+         }
+    }//GEN-LAST:event_UserOnline_btnRankingActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        Message message = new Message(null, Message.Label.LOGOUT);
+        LoginView.clientController.sendData(message);
+        Message messageLog = (Message) LoginView.clientController.receiveData();
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -214,6 +219,9 @@ public class UserOnlineView extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(UserOnlineView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -224,10 +232,8 @@ public class UserOnlineView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton UserOnlineView_btnRefresh;
-    private javax.swing.JButton UserOnline_btnBack;
     private javax.swing.JButton UserOnline_btnInvite;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton UserOnline_btnRanking;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUserOnline;
