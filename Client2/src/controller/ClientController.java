@@ -5,7 +5,9 @@
  */
 package controller;
 
+import View.GameView;
 import View.HomeView;
+import View.LoginView;
 import View.RankingView;
 import View.StartView;
 import View.UserOnlineView;
@@ -27,7 +29,8 @@ public class ClientController {
 
     private Socket mySocket;
     //private String serverHost = "192.168.43.67";
-//    private String serverHost = "192.168.43.252";
+    // private String serverHost = "192.168.43.252";
+//      private String serverHost = "172.20.10.3";
      private  String serverHost = "localhost";
     private int serverPort = 8888;
     ObjectInputStream ois;
@@ -92,6 +95,26 @@ public class ClientController {
                     System.out.println("Case ranking ");
                     Message listRanking = o;
                     return listRanking;
+                    
+                case INVITE_USER:
+                    System.out.println("Da nhan loi moi tu clent 1");
+                    Message inviteMessage = o;
+                    User user = (User)inviteMessage.getObject();
+                    Boolean accept = (JOptionPane.showConfirmDialog(null, 
+                                user.getName() + " want to challege you in a chess game") 
+                                == JOptionPane.YES_OPTION);
+                    if(accept){
+                            Message mess = new Message(user, Message.Label.ACCEPT_INVITE);
+                            sendData(mess);
+                            }
+                    else{
+                        Message mess = new Message(user, Message.Label. REJECT_INVITE);
+                            sendData(mess);
+                            }
+                
+                case ACCEPT_INVITE:
+                    Message message = o;
+                    System.out.println(o.getObject().toString());
             }
 
         } catch (IOException ex) {

@@ -62,6 +62,8 @@ public class Message implements Serializable{
         lIST_FULL,
         LIST_NULL,
         //moi
-        INVITE_USER
+        INVITE_USER,
+        
+        ACCEPT_INVITE
     }
 }

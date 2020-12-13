@@ -29,6 +29,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public User(int id, String username, int point) {
+        this.id = id;
+        this.username = username;
+        this.point = point;
+    }
+
     public User(int id, String username, String name,  int point,String online) {
         this.id = id;
         this.username = username;

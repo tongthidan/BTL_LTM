@@ -61,6 +61,8 @@ public class Message implements Serializable{
         GET_SCOREBOARD,
         REPLY_SCOREBOARD,
         //moi
-        INVITE_USER
+        INVITE_USER,
+        ACCEPT_INVITE,
+        REJECT_INVITE
     }
 }

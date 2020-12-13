@@ -28,7 +28,7 @@ public class ServerControl implements Runnable {
     private ServerControl opSc;
     ObjectInputStream ois;
     ObjectOutputStream oos;
-    
+    ObjectOutputStream objos;
 
     public ServerControl(Socket client) {
         this.client = client;
@@ -98,6 +98,37 @@ public class ServerControl implements Runnable {
                             }
                             oos.writeObject(response);
                             break; 
+                        case INVITE_USER:
+                            User user1 = (User) obj;
+                            int id = user1.getId();
+                            for(ServerControl sc: ServerThread.clients){
+                                    if(id==sc.user.getId()){
+                                        opSc = sc;
+                                        opSc.opSc = this;
+                                            objos = sc.oos;
+                                        sc.objos = oos;
+                                        Message m = new Message(user.getId(), Message.Label.INVITE_USER);
+                                        objos.writeObject(m);
+                                        System.out.println("da gui cho client 2");
+                                    }
+                                }
+                        case ACCEPT_INVITE:
+                            User user2 = (User)obj;
+                            int id1 = user.getId();
+                            int id2 = user2.getId();
+                            String str = "de bai";
+                            for(ServerControl sc: ServerThread.clients){
+                                if(id1==sc.user.getId() || id2==sc.user.getId()){
+                                        opSc = sc;
+                                        opSc.opSc = this;
+                                            objos = sc.oos;
+                                        sc.objos = oos;
+                                        Message m = new Message(str, Message.Label.ACCEPT_INVITE);
+                                        objos.writeObject(m);
+                                        
+                                    }
+                            }
+                             
                         case GET_SCOREBOARD:
                             User rankUser = (User) obj;
                             ArrayList<User> RankingResUsers = userDao.listRanking();

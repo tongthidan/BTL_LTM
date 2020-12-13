@@ -74,6 +74,11 @@ public class UserOnlineView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblUserOnline);
 
         UserOnline_btnInvite.setText("Invite");
+        UserOnline_btnInvite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UserOnline_btnInviteActionPerformed(evt);
+            }
+        });
 
         UserOnline_btnBack.setText("Back ");
         UserOnline_btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -149,21 +154,39 @@ public class UserOnlineView extends javax.swing.JFrame {
     }//GEN-LAST:event_UserOnline_btnBackActionPerformed
 
     private void UserOnlineView_btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnlineView_btnRefreshActionPerformed
-       Message message = new Message(null, Message.Label.LIST_USERS);
+       
+        Message message = new Message(null, Message.Label.LIST_USERS);
        LoginView.clientController.sendData(message);
+        System.out.println("send refresh");
        Message messRefresh = (Message) LoginView.clientController.receiveData();
+        System.out.println(messRefresh.getObject());
        if(messRefresh.getLabel().toString() == "LIST_FULL"){
            listOnline = (ArrayList<User>) messRefresh.getObject();
-            tableModel = (DefaultTableModel) tblUserOnline.getModel();
-        tableModel.setRowCount(0);
-        for(User i : listOnline){
-            tableModel.addRow(i.toObject());
-        }
+         
+//            tableModel = (DefaultTableModel) tblUserOnline.getModel();
+            tableModel.setRowCount(0);
+             for(User i : listOnline){
+                 tableModel.addRow(i.toObject());
+                 }
            
        }
        
        
+       
     }//GEN-LAST:event_UserOnlineView_btnRefreshActionPerformed
+
+    private void UserOnline_btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnInviteActionPerformed
+        // TODO add your handling code here:
+        int i = tblUserOnline.getSelectedRow();
+        int id = Integer.parseInt(tableModel.getValueAt(i, 0).toString());
+        String username = (String) tableModel.getValueAt(i, 1);
+        int  point =  (int) tableModel.getValueAt(i,3); 
+        User user = new User(id, username, point);
+        Message message = new Message(user, Message.Label.INVITE_USER);
+        LoginView.clientController.sendData(message);
+        System.out.println("da gui invite" + message.getObject());
+       
+    }//GEN-LAST:event_UserOnline_btnInviteActionPerformed
 
     /**
      * @param args the command line arguments
