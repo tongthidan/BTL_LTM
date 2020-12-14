@@ -23,6 +23,7 @@ public class LoginView extends javax.swing.JFrame {
 
     public LoginView() {
         initComponents();
+        this.setLocationRelativeTo(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -35,7 +36,7 @@ public class LoginView extends javax.swing.JFrame {
         login_txtusername = new javax.swing.JTextField();
         login_txtpass = new javax.swing.JTextField();
         login_btnLogin = new javax.swing.JButton();
-        login_btnCancel = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,11 +61,11 @@ public class LoginView extends javax.swing.JFrame {
             }
         });
 
-        login_btnCancel.setBackground(new java.awt.Color(255, 51, 102));
-        login_btnCancel.setText("Cancel");
-        login_btnCancel.addActionListener(new java.awt.event.ActionListener() {
+        btnRegister.setBackground(new java.awt.Color(255, 51, 102));
+        btnRegister.setText("Register");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                login_btnCancelActionPerformed(evt);
+                btnRegisterActionPerformed(evt);
             }
         });
 
@@ -78,7 +79,7 @@ public class LoginView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(login_btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(86, 86, 86)
-                        .addComponent(login_btnCancel))
+                        .addComponent(btnRegister))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
@@ -87,9 +88,7 @@ public class LoginView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(login_txtpass, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(login_txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(128, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,7 +107,7 @@ public class LoginView extends javax.swing.JFrame {
                 .addGap(71, 71, 71)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(login_btnLogin)
-                    .addComponent(login_btnCancel))
+                    .addComponent(btnRegister))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -146,12 +145,10 @@ public class LoginView extends javax.swing.JFrame {
         }
         this.dispose();
     }
-    private void login_btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_btnCancelActionPerformed
-        // TODO add your handling code here:
-
-        StartView startView = new StartView();
-        startView.setVisible(true);
-    }//GEN-LAST:event_login_btnCancelActionPerformed
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        new RegisterView().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnRegisterActionPerformed
     public void showMessage(String smg) {
         JOptionPane.showMessageDialog(this, smg);
     }
@@ -159,10 +156,10 @@ public class LoginView extends javax.swing.JFrame {
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton login_btnCancel;
     private javax.swing.JButton login_btnLogin;
     private javax.swing.JTextField login_txtpass;
     private javax.swing.JTextField login_txtusername;

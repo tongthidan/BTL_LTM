@@ -36,6 +36,14 @@ public class UserOnlineView extends javax.swing.JFrame {
         }
     }
 
+    public void showMessage(String content) {
+        JOptionPane.showMessageDialog(this, content);
+    }
+
+    public int showConfirmDialog(String content) {
+        return JOptionPane.showConfirmDialog(this, content);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

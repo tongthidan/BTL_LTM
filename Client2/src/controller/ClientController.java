@@ -19,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Message;
+import static model.Message.Label.ACCEPT_INVITE;
+import static model.Message.Label.REJECT_INVITE;
 import model.User;
 
 /**
@@ -81,11 +83,11 @@ public class ClientController {
                 while (true) {
                     Message result = null;
                     try {
-                        Message o = (Message) ois.readObject();
-                        System.out.println("Da nhan data " + o.getLabel());
-                        switch (o.getLabel()) {
+                        Message message = (Message) ois.readObject();
+                        System.out.println("Da nhan data " + message.getLabel());
+                        switch (message.getLabel()) {
                             case LOGIN_SUCCESS:
-                                userCurrent = (User) o.getObject();
+                                userCurrent = (User) message.getObject();
                                 userOnlineView = new UserOnlineView();
                                 userOnlineView.setVisible(true);
                                 sendData(new Message(null, Message.Label.LIST_USERS));
@@ -94,7 +96,7 @@ public class ClientController {
                                 loginView.showMessage("Invalid username or password!");
                                 break;
                             case REGISTER_SUCCESS:
-                                userCurrent = (User) o.getObject();
+                                userCurrent = (User) message.getObject();
 //                            return "REGISTER_SUCCESS";
 
                             case REGISTER_FAIL:
@@ -102,35 +104,28 @@ public class ClientController {
                             case LOGOUT:
 //                            return "LOGOUT";
                             case lIST_FULL:
-                                userOnlineView.setTable((ArrayList<User>) o.getObject());
+                                userOnlineView.setTable((ArrayList<User>) message.getObject());
                                 break;
                             case REPLY_SCOREBOARD:
                                 System.out.println("Case ranking ");
-                                Message listRanking = o;
+                                Message listRanking = message;
 //                            return listRanking;
-
+                                break;
                             case INVITE_USER:
-                                userReceive = (User) o.getObject();
-                                Message invite = o;
-//                            return invite;
-
-//                     userReceive = (User) o.getObject();
-//                     System.out.println("Nhan được đối thủ " + userReceive.getName());
-//                                int isAccept = userOnlineView.showConfirmDialog(userReceive.getName() + " want to challege you in a game");
-//                                if (isAccept == JOptionPane.YES_OPTION) {
-//                                    Message response = new Message(userReceive, Message.Label.ACCEPT_INVITE);
-//                                    System.out.println("accept");
-//                                    sendData(response);
-//                                } else {
-//                                    Message response = new Message(userReceive, Message.Label.REJECT_INVITE);
-//                                  sendData(response);
-//                                }
-//                                break;
-//
-//                case REJECT_INVITE:
-//                                userReceive = (User) o.getObject();
-//                                userOnlineView.showMessage(userReceive.getName() + " dont want to challege you in a game");
-//                                break;
+                                userReceive = (User) message.getObject();
+                                int isAccept = userOnlineView.showConfirmDialog(userReceive.getName() + " want to challege you in a game");
+                                if (isAccept == JOptionPane.YES_OPTION) {
+                                    Message response = new Message(userReceive, ACCEPT_INVITE);
+                                    sendData(response);
+                                } else {
+                                    Message response = new Message(userReceive, REJECT_INVITE);
+                                    sendData(response);
+                                }
+                                break;
+                            case REJECT_INVITE:
+                                userReceive = (User) message.getObject();
+                                userOnlineView.showMessage(userReceive.getName() + " dont want to challege you in a game");
+                                break;
 //                            case PLAYING:
 //                                 userReceive = (User) o.getObject();
 //                                userOnlineView.showMessage(userReceive.getName() + " playing a game with someone else!");
@@ -150,9 +145,9 @@ public class ClientController {
 //                        Message mess = new Message(user, Message.Label. REJECT_INVITE);
 //                            sendData(mess);
 //                            }
-                            case ACCEPT_INVITE:
-                                Message message = o;
-                                System.out.println(o.getObject().toString());
+//                            case ACCEPT_INVITE:
+//                                Message message = o;
+//                                System.out.println(o.getObject().toString());
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(ClientController.class
