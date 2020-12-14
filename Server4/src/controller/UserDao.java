@@ -18,48 +18,52 @@ import model.User;
  *
  * @author khanh
  */
-public class UserDao extends Dao{
+public class UserDao extends Dao {
 
     public UserDao() {
         super();
     }
-    
-    public Boolean login(User user){
+
+    public User login(User user) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
-        try{
+        try {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
+
+                
                 user.setId(rs.getInt("id"));
-             //   user.setOnline("ONLINE");
-                updateStatus(user, "ONLINE");
-                return true;
+                user.setUsername(rs.getString("username"));
+                user.setName(rs.getString("name"));
+                user.setPoint(rs.getInt("point"));
+                user.setOnline("ONLINE");
+                return user;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
-        return false;
+
+        return null;
     }
-    
-    public void updateStatus(User user, String status){
+
+    public void updateStatus(User user, String status) {
         String query = "UPDATE users SET status = ? WHERE id = ?";
-        try{
+        try {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, status);
             ps.setInt(2, user.getId());
             ps.executeUpdate();
             user.setOnline(status);
-           
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
     }
-    
-    public boolean insertUser(User user){
+
+    public User insertUser(User user) {
         String query = "INSERT INTO users(username, password, name, point, status) VALUE (?,?,?,?,?)";
         PreparedStatement ps;
         try {
@@ -68,16 +72,21 @@ public class UserDao extends Dao{
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getName());
             ps.setInt(4, 0);
-            ps.setString(5, "OFFLINE");
-            
-            ps.executeUpdate();
+            ps.setString(5,"OFFLINE");
+
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                return user;
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+
         }
-        return true;
+        return null;
+
     }
-    
+
 //    public ArrayList<String> listPlayer(){
 //        ArrayList<String> players = new ArrayList<>();
 //        String query = "SELECT username FROM users WHERE status = 'OFFLINE'";
@@ -93,47 +102,46 @@ public class UserDao extends Dao{
 //        
 //        return players;
 //    }
-     public ArrayList<User> listUserOnline(){
-        ArrayList<User> listUserOnline  = new ArrayList<>();
+    public ArrayList<User> listUserOnline() {
+        ArrayList<User> listUserOnline = new ArrayList<>();
         String query = "SELECT * FROM users WHERE status = 'ONLINE'";
-        try{
+        try {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int id = rs.getInt("id");
                 String username = rs.getString("username");
-                String name = rs.getString("name");          
+                String name = rs.getString("name");
                 int point = rs.getInt("point");
-                 String status = rs.getString("status");
-                User userOnline = new User(id,username,name,point,status);
+                String status = rs.getString("status");
+                User userOnline = new User(id, username, name, point, status);
                 listUserOnline.add(userOnline);
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
         return listUserOnline;
     }
-       public ArrayList<User> listRanking(){
-        ArrayList<User> listRanking  = new ArrayList<>();
-        String query = "SELECT * FROM users";
-        try{
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                int id = rs.getInt("id");
-                String username = rs.getString("username");
-                String name = rs.getString("name");          
-                int point = rs.getInt("point");
-                
-                User listRUser = new User(id,username,name,point);
-                listRanking.add(listRUser);
+
+    public ArrayList<User> Ranking() {
+        ArrayList<User> listRanking = new ArrayList<>();
+        try {
+            PreparedStatement pre = conn.prepareStatement("select * from users;");
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                 user.setId(rs.getInt("id"));
+              
+                user.setUsername(rs.getString("username"));
+                user.setName(rs.getString("name"));
+                user.setPoint(rs.getInt("point"));
+                 listRanking.add(user);
             }
-        }catch(Exception ex){
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        return listRanking;
+        return  listRanking;
+        }
+   
     }
-    
-}

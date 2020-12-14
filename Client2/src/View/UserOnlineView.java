@@ -35,7 +35,6 @@ public class UserOnlineView extends javax.swing.JFrame {
       Message listMessage = (Message) LoginView.clientController.receiveData();
       listUserOnline = (ArrayList<User>) listMessage.getObject();
        initComponents();
-
         tableModel = (DefaultTableModel) tblUserOnline.getModel();
        
         tableModel.setRowCount(0);
@@ -46,13 +45,13 @@ public class UserOnlineView extends javax.swing.JFrame {
        
   
     }
-     public int showConfirmDialog(String content) {
-        return JOptionPane.showConfirmDialog(userOnlineView, content);
-    }
-     public void showMessage(String content) {
-        JOptionPane.showMessageDialog(userOnlineView, content);
-    }
-    
+//     public int showConfirmDialog(String content) {
+//        return JOptionPane.showConfirmDialog(userOnlineView, content);
+//    }
+//     public void showMessage(String content) {
+//        JOptionPane.showMessageDialog(userOnlineView, content);
+//    }
+//    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,6 +67,7 @@ public class UserOnlineView extends javax.swing.JFrame {
         UserOnline_btnInvite = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         UserOnline_btnRanking = new javax.swing.JButton();
+        UserOnline_Refresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -111,6 +111,13 @@ public class UserOnlineView extends javax.swing.JFrame {
             }
         });
 
+        UserOnline_Refresh.setText("Refresh");
+        UserOnline_Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UserOnline_RefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,18 +133,24 @@ public class UserOnlineView extends javax.swing.JFrame {
                         .addGap(138, 138, 138)
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
+                        .addGap(27, 27, 27)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(UserOnline_Refresh)
+                .addGap(77, 77, 77))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(28, 28, 28)
+                .addGap(16, 16, 16)
+                .addComponent(UserOnline_Refresh)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                .addGap(47, 47, 47)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(UserOnline_btnInvite)
                     .addComponent(UserOnline_btnRanking))
@@ -149,31 +162,34 @@ public class UserOnlineView extends javax.swing.JFrame {
 
     private void UserOnline_btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnInviteActionPerformed
         // TODO add your handling code here:
-        int row = tblUserOnline.getSelectedRow();
+       int row = tblUserOnline.getSelectedRow();
        int id = (int) tblUserOnline.getValueAt(row, 0);
         String name = tblUserOnline.getValueAt(row, 2).toString();
         int point = (int) tblUserOnline.getValueAt(row, 3);
-        System.out.println("name selected " + name + " " + "point" + point);
         User user = new User(id, name, point);
-        for (User acc : listUserOnline) {
+        listUserOnline = listOnline;
+        for (User acc : listUserOnline ) {
             if (acc.getName().equals(name) && acc.getPoint() == point) {
                user = acc;
-                
             }
         }
         Message message = new Message(user, Message.Label.CHALLENGE);
         LoginView.clientController.sendData(message);
-        System.out.println("Da gui yeu cau invite toi "+ user.getName());
-       
+        System.out.println("Client 1 da gui yeu cau choi toi "+ user.getName());
+
+        Message message1 = (Message) LoginView.clientController.receiveData();
+        if(message.getLabel().toString() == "INVITE_USER"){
+            System.out.println(" Client 2 da nhan duoc yeu cau choi tu server");
+        }
     }//GEN-LAST:event_UserOnline_btnInviteActionPerformed
 
     private void UserOnline_btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnRankingActionPerformed
         // TODO add your handling code here:
         Message messageSendRank = new Message(null, Message.Label.GET_SCOREBOARD);
         LoginView.clientController.sendData(messageSendRank);
-        System.out.println("Da gui yeu cau Ranking");
+       // System.out.println("Da gui yeu cau Ranking");
         Message messageReceiRanking = (Message) LoginView.clientController.receiveData();
-        System.out.println("Da nhan ranking view");
+        //System.out.println("Da nhan ranking view");
       
         listRanking = (ArrayList<User>)messageReceiRanking.getObject();
          if(messageReceiRanking.getLabel().toString()== "REPLY_SCOREBOARD"){
@@ -192,6 +208,20 @@ public class UserOnlineView extends javax.swing.JFrame {
         Message messageLog = (Message) LoginView.clientController.receiveData();
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private void UserOnline_RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_RefreshActionPerformed
+        // TODO add your handling code here:
+        Message message = new Message(null, Message.Label.LIST_USERS);
+        LoginView.clientController.sendData(message);
+        Message receive = (Message) LoginView.clientController.receiveData();
+//        listUserOnline = (ArrayList<User>) receive.getObject();
+            listOnline = (ArrayList<User>) receive.getObject();
+        
+        tableModel.setRowCount(0);
+        for(User u: listOnline){
+            tableModel.addRow(u.toObject());
+        }
+    }//GEN-LAST:event_UserOnline_RefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,6 +262,7 @@ public class UserOnlineView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton UserOnline_Refresh;
     private javax.swing.JButton UserOnline_btnInvite;
     private javax.swing.JButton UserOnline_btnRanking;
     private javax.swing.JLabel jLabel2;

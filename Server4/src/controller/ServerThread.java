@@ -30,8 +30,6 @@ public class ServerThread{
                     Socket client = server.accept();
                     System.out.println("Da vao thread");
                     ServerControl sc = new ServerControl(client);
-                    
-                    System.out.println(sc);
                         if (clients.indexOf(sc) == -1) {
                             clients.add(sc);
                             System.out.println("them 1 lan " + clients.size());

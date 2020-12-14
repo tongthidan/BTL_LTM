@@ -43,22 +43,26 @@ public class ServerControl implements Runnable {
 
     @Override
     public void run() {
+          User userReceive = new User();
         while (!Thread.currentThread().isInterrupted()) {
+          
             try {
                 Object o = ois.readObject();
                 System.out.println("Ket noi cmnr");
                 if (o instanceof Message) {
                     Message request = (Message) o;
-                    Object obj = request.getObject();
-
-                    Message response = null; 
                     System.out.println(((Message) o).getLabel());
+                    userReceive = (User)request.getObject();
+                    
+                    Message response = null; 
+                  
                     switch (request.getLabel()) {
+                        
                         case LOGIN:
-                            User mUser = (User) obj;
-                            Boolean result = userDao.login(mUser);
-                            user = mUser;
-                            if (result) {
+                           
+                           user = userDao.login(userReceive);
+                            
+                            if (user != null ) {
                                 response = new Message(user, Message.Label.LOGIN_SUCCESS);
                                 
                             } else {
@@ -69,13 +73,13 @@ public class ServerControl implements Runnable {
                             break;
                         
                         case LOGOUT:
-                            userDao.updateStatus(user, "OFFLINE");
+                            userDao.updateStatus(userReceive, "OFFLINE");
                             break;
                         case REGISTER:                            
-                            User nUser = (User) obj;
-                            boolean resultz = userDao.insertUser(nUser);
-                            user = nUser;
-                            if (resultz) {
+                          
+                            user= userDao.insertUser(userReceive);
+//                            user = nUser;
+                            if (user != null) {
                                 response = new Message(user, Message.Label.REGISTER_SUCCESS);
                                 
                             } else {
@@ -86,51 +90,40 @@ public class ServerControl implements Runnable {
                             break;
                             
                         case LIST_USERS:
-                            User userOnline = (User) obj;
-                            ArrayList<User> resultUser = userDao.listUserOnline();
-                           // System.out.println(resultUser);
-                            if(resultUser != null){
-                                response = new Message(resultUser, Message.Label.lIST_FULL);
-                                
-                            }
-                            else{
-                                response = new Message(resultUser, Message.Label.LIST_NULL);
-                            }
-                            oos.writeObject(response);
-                            break; 
-                           case CHALLENGE:
-                               User userReceive = (User) obj;
-                               System.out.println(userReceive.getName());
-                               for (ServerControl sc : ServerThread.clients) {
-                                   System.out.println(sc.user.getName() +"\n");
-                                if (sc.user.getId() == userReceive.getId()) {
-                                    System.out.println(sc.user.getName());
-                                    Message mesSend = new Message(user, Message.Label.INVITE_USER);
-                                    sc.oos.writeObject(mesSend);
-                                    System.out.println("da chuyen loi moi cho doi thu " + userReceive.getName());
-                                }
-                                else{
-                                    System.out.println("Khong tim thay ");
-                                }
-                                if (sc.user.getId() == userReceive.getId()
-                                        && sc.user.getOnline().equals("BUSY")) {
-                                     Message mesSend = new Message(userReceive, Message.Label.PLAYING);
-                                    oos.writeObject(mesSend);
-                                }
-                            }
-                            break;
-                            case REJECT_INVITE:
-                                User accountRecived = (User) obj;
+                            ArrayList<User> listUserOnline = new ArrayList<>();
                             for (ServerControl sc : ServerThread.clients) {
-                                if (sc.user.getId() == accountRecived.getId()) {
-                                     Message mesSend = new Message(user, Message.Label.REJECT_INVITE);
-                                    sc.oos.writeObject(mesSend);
-                                    System.out.println("chuyen loi tu choi cua doi thu" + sc.user.getId());
+                                if (sc.user != user) {
+                                    listUserOnline.add(sc.user);
                                 }
                             }
-//                            mesSend = new Message(account, Type.REJECT_CHALLENGE);
-//                            oos.writeObject(mesSend);
+                             Message mesSend = new Message(listUserOnline, Message.Label.lIST_FULL);
+                            oos.writeObject(mesSend);
                             break;
+
+                           case CHALLENGE:
+                               System.out.println(userReceive.getName());
+                            for (ServerControl sc : ServerThread.clients) {
+                                if (sc.user.getId() == userReceive.getId() ){
+                                    System.out.println(sc.user.getName());
+                                    mesSend = new Message(userReceive, Message.Label.INVITE_USER);
+                                    sc.oos.writeObject(mesSend);
+                                    System.out.println(" Server chuyen loi moi cho doi thu " + userReceive.getName());
+                                }
+                            }
+                            break;
+
+//                            case REJECT_INVITE:
+//                                User accountRecived = (User) obj;
+//                            for (ServerControl sc : ServerThread.clients) {
+//                                if (sc.user.getId() == accountRecived.getId()) {
+//                                     Message mesSend = new Message(user, Message.Label.REJECT_INVITE);
+//                                    sc.oos.writeObject(mesSend);
+//                                    System.out.println("chuyen loi tu choi cua doi thu" + sc.user.getId());
+//                                }
+//                            }
+////                            mesSend = new Message(account, Type.REJECT_CHALLENGE);
+////                            oos.writeObject(mesSend);
+//                            break;
 
 
 //                        case INVITE_USER:
@@ -165,8 +158,8 @@ public class ServerControl implements Runnable {
 //                            }
                              
                         case GET_SCOREBOARD:
-                            User rankUser = (User) obj;
-                            ArrayList<User> RankingResUsers = userDao.listRanking();
+//                            User rankUser = (User) obj;
+                            ArrayList<User> RankingResUsers = userDao.Ranking();
                             System.out.println(RankingResUsers);
                             if(RankingResUsers != null){
                                 response = new Message(RankingResUsers, Message.Label.REPLY_SCOREBOARD);   
