@@ -5,7 +5,6 @@
  */
 package View;
 
-import static View.LoginView.clientController;
 import controller.ClientController;
 import javax.swing.JOptionPane;
 import model.Message;
@@ -17,15 +16,8 @@ import model.User;
  */
 public class RegisterView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Register
-     */
-    static   ClientController clientController = new ClientController() ;
     public RegisterView() {
-        
-       
         initComponents();
-        clientController.openConnection();
     }
 
     /**
@@ -154,17 +146,17 @@ public class RegisterView extends javax.swing.JFrame {
         User user = new User(username, password, name);
         Message messageSend = new Message(user,Message.Label.REGISTER);
             
-        clientController.sendData(messageSend);
-        String result= (String) clientController.receiveData();
-        if(result.equals("REGISTER_SUCCESS")){
-            JOptionPane.showMessageDialog(this,"Register successfull");
-           StartView startView = new StartView();
-           startView.setVisible(true);
-        }
-        else if (result.equals("REGISTER_FAIL")){
-            JOptionPane.showMessageDialog(this,"REGISTER FAIL !");
-            
-        }
+        ClientController.sendData(messageSend);
+//        String result= (String) clientController.receiveData();
+//        if(result.equals("REGISTER_SUCCESS")){
+//            JOptionPane.showMessageDialog(this,"Register successfull");
+//           StartView startView = new StartView();
+//           startView.setVisible(true);
+//        }
+//        else if (result.equals("REGISTER_FAIL")){
+//            JOptionPane.showMessageDialog(this,"REGISTER FAIL !");
+//            
+//        }
         this.dispose();
                 
     }//GEN-LAST:event_register_btnRegisterActionPerformed
@@ -178,46 +170,10 @@ public class RegisterView extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         Message message = new Message(null, Message.Label.LOGOUT);
-        LoginView.clientController.receiveData();
+//        ClientController.receiveData();
     }//GEN-LAST:event_formWindowClosing
 public void showMessage(String smg){
         JOptionPane.showMessageDialog(this,smg);
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RegisterView().setVisible(true);
-                
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
