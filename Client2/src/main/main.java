@@ -5,17 +5,19 @@
  */
 package main;
 
-import View.StartView;
+import View.LoginView;
+import controller.ClientController;
 
 /**
  *
  * @author KyThuat88
  */
+public class main {
 
-
-public class main{
     public static void main(String[] args) {
-        StartView start = new StartView();
-        start.setVisible(true);
+        LoginView loginView = new LoginView();
+        loginView.setVisible(true);
+        ClientController clientController = new ClientController();
+        clientController.setLoginView(loginView);
     }    
 }

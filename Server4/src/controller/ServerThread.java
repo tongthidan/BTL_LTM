@@ -35,7 +35,6 @@ public class ServerThread{
                             System.out.println("them 1 lan " + clients.size());
                         }
                         new Thread(sc).start();
-
                 }
                 
                 Thread.sleep(100);
