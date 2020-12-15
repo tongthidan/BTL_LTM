@@ -14,11 +14,11 @@ import java.sql.DriverManager;
  */
 public class Dao {
     protected Connection conn;
-    //private String jdbcURL = "jdbc:mysql://localhost:3306/laptrinhmang";
-    private String jdbcURL = "jdbc:mysql://localhost:3306/btl_ltm";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/laptrinhmang";
+    //private String jdbcURL = "jdbc:mysql://localhost:3306/btl_ltm";
     private String jdbcUsername = "root";
-    // private String jdbcPassword = "123456789";
-    private String jdbcPassword = "123456";
+     private String jdbcPassword = "123456789";
+    //private String jdbcPassword = "123456";
 
     public Dao() {
         if(conn == null){
