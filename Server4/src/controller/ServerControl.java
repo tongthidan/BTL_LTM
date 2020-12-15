@@ -103,7 +103,7 @@ public class ServerControl implements Runnable {
                             }
                             break;
                         case REJECT_INVITE:
-//                            User accountRecived = (User) obj;
+                            User accountRecived = (User) obj;
                             for (ServerControl sc : ServerThread.clients) {
                                 if (sc.user.getId() == userReceive.getId()) {
                                     Message mesSend = new Message(user, Message.Label.REJECT_INVITE);
@@ -129,22 +129,22 @@ public class ServerControl implements Runnable {
 //                                        System.out.println("da gui cho client 2");
 //                                    }
 //                                }
-//                        case ACCEPT_INVITE:
-//                            User user2 = (User)obj;
-//                            int id1 = user.getId();
-//                            int id2 = user2.getId();
-//                            String str = "de bai";
-//                            for(ServerControl sc: ServerThread.clients){
-//                                if(id1==sc.user.getId() || id2==sc.user.getId()){
-//                                        opSc = sc;
-//                                        opSc.opSc = this;
-//                                            objos = sc.oos;
-//                                        sc.objos = oos;
-//                                        Message m = new Message(str, Message.Label.ACCEPT_INVITE);
-//                                        objos.writeObject(m);
-//                                        
-//                                    }
-//                            }
+                        case ACCEPT_INVITE:
+                            User user2 = (User) obj;
+                            int id1 = user.getId();
+                            int id2 = user2.getId();
+                            String str = "de bai";
+                            for (ServerControl sc : ServerThread.clients) {
+                                if (id1 == sc.user.getId() || id2 == sc.user.getId()) {
+                                    opSc = sc;
+                                    opSc.opSc = this;
+                                    objos = sc.oos;
+                                    sc.objos = oos;
+                                    Message m = new Message(str, Message.Label.ACCEPT_INVITE);
+                                    objos.writeObject(m);
+
+                                }
+                            }
                         case GET_SCOREBOARD:
 //                            User rankUser = (User) obj;
                             ArrayList<User> RankingResUsers = userDao.Ranking();
