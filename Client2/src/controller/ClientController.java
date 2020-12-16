@@ -113,7 +113,7 @@ public class ClientController {
                                 break;
                             case INVITE_USER:
                                 userReceive = (User) message.getObject();
-                                int isAccept = userOnlineView.showConfirmDialog(userReceive.getName() + " want to challege you in a game");
+                                int isAccept = userOnlineView.showConfirmDialog("Do u want to play game ? ");
                                 if (isAccept == JOptionPane.YES_OPTION) {
                                     Message response = new Message(userReceive, ACCEPT_INVITE);
                                     sendData(response);
