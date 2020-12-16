@@ -117,16 +117,11 @@ public class ServerControl implements Runnable {
                             request = (Message) o;
                             User user1 = (User) request.getObject();
                             User user2 = this.user;
-//                            int id1 = user.getId();
-//                            int id2 = user2.getId();
-//                            System.out.println(user2.getName() + " " + user.getName());
                             String str = "de bai";
                             for (ServerControl sc : ServerThread.clients) {
                                 if (user1.getId() == sc.user.getId() || user2.getId() == sc.user.getId()) {
                                     System.out.println(this.oos + "    " +sc.oos);
                                     Message m = new Message(str, Message.Label.ACCEPT_INVITE); 
-                                    
-                                //    objos.writeObject(m);
                                     this.oos.writeObject(m);
                                     sc.oos.writeObject(m);                                                                      
                                 }
@@ -138,7 +133,6 @@ public class ServerControl implements Runnable {
                             System.out.println(RankingResUsers);
                             if (RankingResUsers != null) {
                                 response = new Message(RankingResUsers, Message.Label.REPLY_SCOREBOARD);
-
                             }
                             oos.writeObject(response);
                             break;

@@ -5,6 +5,7 @@
  */
 package View;
 
+import controller.ClientController;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.table.DefaultTableModel;
@@ -27,18 +28,7 @@ public class RankingView extends javax.swing.JFrame {
     public RankingView() {
         initComponents();       
 
-        tableModel = (DefaultTableModel) tblRanking.getModel();
-        tableModel.setRowCount(0);
-        Collections.sort(UserOnlineView.listRanking);
-        Collections.reverse(UserOnlineView.listRanking);
-        int count = 0;
-        for(User i: UserOnlineView.listRanking){
-            count ++;
-            i.setCount(count);
-            tableModel.addRow(i.toObjectR());
-        }
-        
-        
+        tableModel = (DefaultTableModel) tblRanking.getModel();    
     }
 
     /**
@@ -53,8 +43,8 @@ public class RankingView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRanking = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        Ranking_btnBack = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,17 +69,17 @@ public class RankingView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblRanking);
 
-        jButton1.setText("Exit Application");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRefreshActionPerformed(evt);
             }
         });
 
-        Ranking_btnBack.setText("Back");
-        Ranking_btnBack.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Ranking_btnBackActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
 
@@ -100,61 +90,65 @@ public class RankingView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jButton1)
-                        .addGap(127, 127, 127)
-                        .addComponent(Ranking_btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(133, 133, 133)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)
+                        .addComponent(btnRefresh))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addGap(40, 40, 40)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addGap(236, 236, 236)
+                        .addComponent(btnBack)))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(btnRefresh)))
+                .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(Ranking_btnBack))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addComponent(btnBack)
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Ranking_btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ranking_btnBackActionPerformed
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         // TODO add your handling code here:
-        UserOnlineView homeView = new UserOnlineView();
-        homeView.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_Ranking_btnBackActionPerformed
+        Message message = new Message(null,Message.Label.GET_SCOREBOARD);
+        ClientController.sendData(message);
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-//        Message message = new Message(null,Message.Label.LOGOUT);
-//        LoginView.clientController.sendData(message);
-//        StartView startView = new StartView();
-//        startView.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        UserOnlineView userOnlineView = new UserOnlineView();
+        userOnlineView.setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
   public void setTable(ArrayList<User> listRanking) {
         this.listRanking = listRanking;
+        Collections.sort(listRanking);
+        Collections.reverse(listRanking);
         tableModel.setRowCount(0);
+        int count = 0;
         for (User i : listRanking) {
-            tableModel.addRow(i.toObject());
+            count++;
+            i.setCount(count);
+            tableModel.addRow(i.toObjectR());
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Ranking_btnBack;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblRanking;

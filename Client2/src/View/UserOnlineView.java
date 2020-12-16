@@ -22,6 +22,7 @@ public class UserOnlineView extends javax.swing.JFrame {
     static ArrayList<User> listRanking = new ArrayList<>();
     DefaultTableModel tableModel;
     static UserOnlineView userOnlineView;
+    static  RankingView rankingView;
 
     public UserOnlineView() {
         initComponents();
@@ -161,14 +162,6 @@ public class UserOnlineView extends javax.swing.JFrame {
     private void UserOnline_btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnRankingActionPerformed
         Message messageSendRank = new Message(null, Message.Label.GET_SCOREBOARD);
         ClientController.sendData(messageSendRank);
-//        Message messageReceiRanking = (Message) LoginView.clientController.receiveData();
-//        listRanking = (ArrayList<User>) messageReceiRanking.getObject();
-//        if (messageReceiRanking.getLabel().toString() == "REPLY_SCOREBOARD") {
-//            RankingView rankingView = new RankingView();
-//            rankingView.setVisible(true);
-//        } else {
-//            System.out.println("Ranking view fail");
-//        }
     }//GEN-LAST:event_UserOnline_btnRankingActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

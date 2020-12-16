@@ -5,7 +5,7 @@
  */
 package controller;
 
-import View.GameView;
+
 import View.LoginView;
 import View.RankingView;
 import View.RegisterView;
@@ -33,38 +33,37 @@ public class ClientController {
     private Socket mySocket;
     //private String serverHost = "192.168.43.67";
     // private String serverHost = "192.168.43.252";
-    //private String serverHost = "172.19.201.116";
-    private String serverHost = "172.20.10.2";
+    private String serverHost = "192.168.1.248";
+   // private String serverHost = "172.20.10.2";
  //  private String serverHost = "localhost";
     private int serverPort = 8000;
     ObjectInputStream ois;
     private static ObjectOutputStream oos;
     private User userCurrent;
     private User userReceive;
-    static UserOnlineView userOnlineView;
+    
     Runnable listenChallenge;
     static Thread thread;
     private LoginView loginView;
     private RegisterView registerView;
-    public ClientController() {
+    static UserOnlineView userOnlineView;
+    static RankingView rankingView;
+    
+    public ClientController(){
         openConnection();
         receiveData();
     }
 
-    public void setLoginView(LoginView loginView) {
+    public void setLoginView(LoginView loginView, RegisterView registerView) {
         this.loginView = loginView;
-    }
-    public  void setRegisterVew(RegisterView registerView){
         this.registerView = registerView;
     }
-
+    
     public void openConnection() {
         try {
             mySocket = new Socket(serverHost, serverPort);
             ois = new ObjectInputStream(mySocket.getInputStream());
-//            System.out.println("new ois");
             oos = new ObjectOutputStream(mySocket.getOutputStream());
-//            System.out.println("new oos");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -102,12 +101,13 @@ public class ClientController {
                                 break;
                             case REGISTER_SUCCESS:
                                 userCurrent = (User) message.getObject();
-                               //registerView.showMessage("register successful");
+                               registerView.showMessage("Register successful");
                                 loginView = new LoginView();
                                 loginView.setVisible(true);
                                  break;
 
                             case REGISTER_FAIL:
+                                registerView.showMessage("Register fail");
                                 break;
                             case LOGOUT:
 //                            return "LOGOUT";
@@ -116,9 +116,9 @@ public class ClientController {
                                 userOnlineView.setTable((ArrayList<User>) message.getObject());
                                 break;
                             case REPLY_SCOREBOARD:
-                                System.out.println("Case ranking ");
-                                Message listRanking = message;
-//                            return listRanking;
+                                rankingView = new RankingView();
+                                rankingView.setVisible(true);
+                               rankingView.setTable((ArrayList<User>) message.getObject());
                                 break;
                             case INVITE_USER:
                                 userReceive = (User) message.getObject();

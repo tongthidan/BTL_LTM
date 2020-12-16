@@ -6,6 +6,7 @@
 package main;
 
 import View.LoginView;
+import View.RegisterView;
 import controller.ClientController;
 
 /**
@@ -16,9 +17,9 @@ public class main {
 
     public static void main(String[] args) {
         LoginView loginView = new LoginView();
-       
+       RegisterView registerView = new RegisterView();
         ClientController clientController = new ClientController();
-        clientController.setLoginView(loginView);
+       clientController.setLoginView(loginView,registerView);
          loginView.setVisible(true);
     }    
 }

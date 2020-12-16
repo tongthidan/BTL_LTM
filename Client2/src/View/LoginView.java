@@ -20,6 +20,7 @@ public class LoginView extends javax.swing.JFrame {
     static ArrayList<User> listUserOnline = new ArrayList<>();
     static ArrayList<User> listRanking = new ArrayList<>();
     static UserOnlineView userOnlineView;
+    static  RankingView rankingView;
     static RegisterView registerView;
 
     public LoginView() {
@@ -127,6 +128,7 @@ public class LoginView extends javax.swing.JFrame {
         User user = new User(username, password);
         Message mess = new Message(user, Message.Label.LOGIN);
         ClientController.sendData(mess);
+        this.dispose();
 
     }//GEN-LAST:event_login_btnLoginActionPerformed
 
