@@ -43,7 +43,7 @@ public class ServerControl implements Runnable {
 
     @Override
     public void run() {
-        User userReceive = new User();
+    //    User userReceive = new User();
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 Object o = ois.readObject();
@@ -51,13 +51,14 @@ public class ServerControl implements Runnable {
                 System.out.println("Ket noi cmnr");
                 if (o instanceof Message) {
                     Message request = (Message) o;
-                    System.out.println(((Message) o).getLabel());
-                    userReceive = (User) request.getObject();
-                    Message response = null;
+                    Object userReceive = request.getObject();
+                    Message response = new Message();
+                    
                     switch (request.getLabel()) {
                         case LOGIN:
-                            user = userDao.login(userReceive);
-                            if (user != null) {
+                            User nuser = userDao.login((User)userReceive);
+                            if (nuser != null) {
+                                user = nuser;
                                 response = new Message(user, Message.Label.LOGIN_SUCCESS);
                             } else {
                                 response = new Message(user, Message.Label.LOGIN_FAIL);
@@ -67,12 +68,13 @@ public class ServerControl implements Runnable {
                             break;
 
                         case LOGOUT:
-                            userDao.updateStatus(userReceive, "OFFLINE");
+                            userDao.updateStatus((User)userReceive, "OFFLINE");
                             break;
                             
                         case REGISTER:
-                            user = userDao.insertUser(userReceive);
+                            user = userDao.insertUser((User)userReceive);
                             if (user != null) {
+                                
                                 response = new Message(user, Message.Label.REGISTER_SUCCESS);
                             } else {
                                 response = new Message(user, Message.Label.REGISTER_FAIL);
@@ -93,92 +95,40 @@ public class ServerControl implements Runnable {
                         case CHALLENGE:
                             System.out.println(user.getName());
                             for (ServerControl sc : ServerThread.clients) {
-                                if (sc.user.getId() == userReceive.getId()) {
-                                    System.out.println(sc.user.getName());
-                                    mesSend = new Message(userReceive, Message.Label.INVITE_USER);
+                                if (sc.user.getId() == ((User)userReceive).getId()) {
+                            //        System.out.println(sc.user.getName());
+                                    mesSend = new Message(this.user, Message.Label.INVITE_USER);
                                     sc.oos.writeObject(mesSend);
-                                    System.out.println(" Server chuyen loi moi cho doi thu " + userReceive.getName());
                                 }
                             }
                             break;
                         case REJECT_INVITE:
                            // User accountRecived = (User) obj;
                             for (ServerControl sc : ServerThread.clients) {
-                                if (sc.user.getId() == userReceive.getId()) {
+                                if (sc.user.getId() == ((User)userReceive).getId()) {
                                     Message mesSend = new Message(user, Message.Label.REJECT_INVITE);
                                     sc.oos.writeObject(mesSend);
                                     System.out.println("chuyen loi tu choi cua doi thu" + sc.user.getId());
                                 }
                             }
-//                            mesSend = new Message(account, Type.REJECT_CHALLENGE);
-//                            oos.writeObject(mesSend);
                             break;
 
-//                        case INVITE_USER:
-//                            User user1 = (User) obj;
-//                            int id = user1.getId();
-//                            for(ServerControl sc: ServerThread.clients){
-//                                    if(id==sc.user.getId()){
-//                                        opSc = sc;
-//                                        opSc.opSc = this;
-//                                            objos = sc.oos;
-//                                        sc.objos = oos;
-//                                        Message m = new Message(user.getId(), Message.Label.INVITE_USER);
-//                                        objos.writeObject(m);
-//                                        System.out.println("da gui cho client 2");
-//                                    }
-//                                }
                         case ACCEPT_INVITE:
                             request = (Message) o;
-                            User user2 = (User) request.getObject();
-                            int id1 = user.getId();
-                            int id2 = user2.getId();
-                            System.out.println(user2.getName() + " " + user.getName());
+                            User user1 = (User) request.getObject();
+                            User user2 = this.user;
+//                            int id1 = user.getId();
+//                            int id2 = user2.getId();
+//                            System.out.println(user2.getName() + " " + user.getName());
                             String str = "de bai";
                             for (ServerControl sc : ServerThread.clients) {
-                                if (id2 == sc.user.getId()) {
-                                //    opSc = sc;
-                                //    opSc.opSc = this;
-                                //    objos = sc.oos;
-                                //    sc.objos = oos;
-                                    
-                                    System.out.println(objos + "    " +sc.objos);
+                                if (user1.getId() == sc.user.getId() || user2.getId() == sc.user.getId()) {
+                                    System.out.println(this.oos + "    " +sc.oos);
                                     Message m = new Message(str, Message.Label.ACCEPT_INVITE); 
                                     
                                 //    objos.writeObject(m);
-                                    oos.writeObject(m);
-                                    sc.oos.writeObject(m);
-                                    
-//                                    Thread t1 = new Thread(){
-//                                        @Override
-//                                        public void run() {
-//                                            try {
-//                                                System.out.println("gui cho client 1");
-//                                                objos.writeObject(m);
-//                                                
-//                                            } catch (IOException ex) {
-//                                                Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
-//                                            }
-//                                        }
-//                                        
-//                                    };
-//                                    
-//                                    Thread t2 = new Thread(){
-//                                        @Override
-//                                        public void run() {
-//                                            try {
-//                                                System.out.println("gui cho client 2");
-//                                                sc.objos.writeObject(m);
-//                                                
-//                                            } catch (IOException ex) {
-//                                                Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
-//                                            }
-//                                        }
-//                                        
-//                                    };
-//                                    t1.start();
-//                                    t2.start();
-                                    break;
+                                    this.oos.writeObject(m);
+                                    sc.oos.writeObject(m);                                                                      
                                 }
                                 
                             }

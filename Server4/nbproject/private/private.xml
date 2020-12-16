@@ -2,15 +2,9 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-            <file>file:/home/dolong/Desktop/BTL_LTM/Server4/src/controller/ServerControl.java</file>
-            <file>file:/home/dolong/Desktop/BTL_LTM/Server4/src/controller/UserDao.java</file>
-            <file>file:/home/dolong/Desktop/BTL_LTM/Server4/src/controller/Dao.java</file>
-            <file>file:/home/dolong/Desktop/BTL_LTM/Server4/src/model/Message.java</file>
+            <file>file:/C:/Users/KyThuat88/OneDrive/Desktop/ltm-server/BTL_LTM/Server4/src/controller/UserDao.java</file>
+            <file>file:/C:/Users/KyThuat88/OneDrive/Desktop/ltm-server/BTL_LTM/Server4/src/controller/ServerControl.java</file>
         </group>
->>>>>>> 7f80bb855ea1c99a00a4de772dacf36de4d3aa24
     </open-files>
 </project-private>

@@ -22,6 +22,7 @@ import model.Message;
 import static model.Message.Label.ACCEPT_INVITE;
 import static model.Message.Label.REJECT_INVITE;
 import model.User;
+import puzzle.puzzle;
 
 /**
  *
@@ -126,11 +127,13 @@ public class ClientController {
                                 userReceive = (User) message.getObject();
                                 userOnlineView.showMessage(userReceive.getName() + " dont want to challege you in a game");
                                 break;
-                                
+
                             case ACCEPT_INVITE:
-                            //    JOptionPane.showMessageDialog(null, "Day la game");
-                                System.out.println("Day la game");
+                                puzzle p =  new puzzle();
+                                p.setTime(); 
                                 break;
+                                
+                            
 
                         }
                     } catch (IOException ex) {
@@ -158,3 +161,5 @@ public class ClientController {
         return true;
     }
 }
+
+
