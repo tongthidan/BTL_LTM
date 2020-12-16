@@ -22,6 +22,7 @@ import model.Message;
 import static model.Message.Label.ACCEPT_INVITE;
 import static model.Message.Label.REJECT_INVITE;
 import model.User;
+import puzzle.puzzle;
 
 /**
  *
@@ -32,8 +33,8 @@ public class ClientController {
     private Socket mySocket;
     //private String serverHost = "192.168.43.67";
     // private String serverHost = "192.168.43.252";
-//      private String serverHost = "172.20.10.3";
-    private String serverHost = "localhost";
+     private String serverHost = "172.19.200.114";
+  //  private String serverHost = "localhost";
     private int serverPort = 8888;
     ObjectInputStream ois;
     private static ObjectOutputStream oos;
@@ -126,11 +127,13 @@ public class ClientController {
                                 userReceive = (User) message.getObject();
                                 userOnlineView.showMessage(userReceive.getName() + " dont want to challege you in a game");
                                 break;
-                                
+
                             case ACCEPT_INVITE:
-                            //    JOptionPane.showMessageDialog(null, "Day la game");
-                                System.out.println("Day la game");
+                                puzzle p =  new puzzle();
+                                p.setTime(); 
                                 break;
+                                
+                            
 
                         }
                     } catch (IOException ex) {
@@ -158,3 +161,5 @@ public class ClientController {
         return true;
     }
 }
+
+

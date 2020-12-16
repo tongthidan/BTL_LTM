@@ -149,16 +149,13 @@ public class UserOnlineView extends javax.swing.JFrame {
     private void UserOnline_btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnInviteActionPerformed
         int row = tblUserOnline.getSelectedRow();
         int id = (int) tblUserOnline.getValueAt(row, 0);
+        String username =  tblUserOnline.getValueAt(row, 1).toString();
         String name = tblUserOnline.getValueAt(row, 2).toString();
         int point = (int) tblUserOnline.getValueAt(row, 3);
-        for (User acc : listUserOnline) {
-            if (acc.getName().equals(name) && acc.getPoint() == point) {
-                Message message = new Message(acc, Message.Label.CHALLENGE);
-                ClientController.sendData(message);
-                System.out.println(message.getObject());
-//                System.out.println("Client 1 da gui yeu cau choi toi " + acc.getName());
-            }
-        }
+        
+        User user = new User(id, username, name, name);
+        Message message = new Message(user, Message.Label.CHALLENGE);
+        ClientController.sendData(message);
     }//GEN-LAST:event_UserOnline_btnInviteActionPerformed
 
     private void UserOnline_btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnline_btnRankingActionPerformed
